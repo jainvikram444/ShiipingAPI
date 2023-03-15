@@ -12,12 +12,14 @@
 
 3) Database migration as below:
 - Enter below commnand in package manager for the database migration:
+
     PM> Update-Database
 
 
 4) Selcect Shiiping API and run the application. Application open the default Swagger API page.  Where you can test the api of Ship.
 - Ref swagger link: https://localhost:7180/swagger/index.html
 - As per below API of Ships:
+    
     a)
         GET
         ​/api​/Ships
@@ -44,7 +46,7 @@
         Delete Ship.
 
 5) Only for ref: 
- - Database seeding is auto in development if records not available in Port and Ship tables as peer below:
+ - Database seeding it's auto deployment in development mode if records not available in the Port and Ship tables as per below:
 - Only for the reference:  
     new Port
     {
