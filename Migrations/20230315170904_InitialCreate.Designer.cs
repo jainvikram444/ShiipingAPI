@@ -12,7 +12,7 @@ using ShiipingAPI.Data;
 namespace ShiipingAPI.Migrations
 {
     [DbContext(typeof(ShiipingAPIContext))]
-    [Migration("20230314055109_InitialCreate")]
+    [Migration("20230315170904_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,9 @@ namespace ShiipingAPI.Migrations
                     b.Property<string>("Description")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Distance")
+                        .HasColumnType("int");
 
                     b.Property<double>("Latitude")
                         .HasColumnType("float");

@@ -37,6 +37,9 @@ namespace ShiipingAPI.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int>("Distance")
+                        .HasColumnType("int");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
@@ -50,9 +53,6 @@ namespace ShiipingAPI.Migrations
 
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
-
-                    b.Property<DateTime>("Distance")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");

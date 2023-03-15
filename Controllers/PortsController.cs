@@ -7,103 +7,58 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShiipingAPI.Data;
 using ShiipingAPI.Models;
+using ShiipingAPI.Services;
 
 namespace ShiipingAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiExplorerSettings(IgnoreApi = true)]
+    [ApiExplorerSettings(IgnoreApi = false)]
     [ApiController]
     public class PortsController : ControllerBase
     {
-        private readonly ShiipingAPIContext _context;
-
-        public PortsController(ShiipingAPIContext context)
+        private readonly IPortService portService;
+        public PortsController(IPortService _portService)
         {
-            _context = context;
+            portService = _portService;
         }
 
         // GET: api/Ports
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Port>>> GetPort()
+        public IEnumerable<Port> GetPortList()
         {
-            return await _context.Port.ToListAsync();
+            var portList =  portService.GetPortList();
+            return portList;
         }
 
         // GET: api/Ports/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Port>> GetPort(int id)
+        public Port GetPort(int id)
         {
-            var port = await _context.Port.FindAsync(id);
-
-            if (port == null)
-            {
-                return NotFound();
-            }
-
-            return port;
+            return portService.GetPortById(id);
         }
 
         // PUT: api/Ports/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPort(int id, Port port)
+        public Port PutPort(int id, Port port)
         {
-            if (id != port.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(port).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PortExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return portService.UpdatePort(id, port);
         }
 
         // POST: api/Ports
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Port>> PostPort(Port port)
+        public Port PostPort(Port port)
         {
-            _context.Port.Add(port);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPort", new { id = port.Id }, port);
+            return portService.AddPort(port);
         }
 
         // DELETE: api/Ports/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePort(int id)
+        public bool DeletePort(int id)
         {
-            var port = await _context.Port.FindAsync(id);
-            if (port == null)
-            {
-                return NotFound();
-            }
-
-            _context.Port.Remove(port);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return portService.DeletePort(id);            
         }
-
-        private bool PortExists(int id)
-        {
-            return _context.Port.Any(e => e.Id == id);
-        }
+ 
     }
 }

@@ -20,9 +20,9 @@ namespace ShiipingAPI.Migrations
                     Latitude = table.Column<double>(type: "float", nullable: false),
                     Longitude = table.Column<double>(type: "float", nullable: false),
                     Status = table.Column<short>(type: "smallint", nullable: false),
-                    Distance = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Distance = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

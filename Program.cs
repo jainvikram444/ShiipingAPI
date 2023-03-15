@@ -4,8 +4,16 @@ using Microsoft.OpenApi.Models;
 using ShiipingAPI.Data;
 using ShiipingAPI.Migrations;
 using System.Reflection;
+using ShiipingAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddScoped<IPortService, PortService>();
+builder.Services.AddScoped<IShipService, ShipService>();
+
+
+
 builder.Services.AddDbContext<ShiipingAPIContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ShiipingAPIContext") ?? throw new InvalidOperationException("Connection string 'ShiipingAPIContext' not found.")));
 
