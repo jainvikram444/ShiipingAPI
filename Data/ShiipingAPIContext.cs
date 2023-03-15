@@ -15,5 +15,7 @@ namespace ShiipingAPI.Data
         }
 
         public DbSet<ShiipingAPI.Models.Ship> Ship { get; set; } = default!;
+
+        public DbSet<ShiipingAPI.Models.Port> Port { get; set; }
     }
 }

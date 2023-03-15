@@ -1,16 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using System.ComponentModel;
+
+
 
 namespace ShiipingAPI.Models
 {
-    
-    public class Ship
+    public class Port
     {
+
          public int Id { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength =3)]
+        [StringLength(50, MinimumLength = 3)]
         public string Name { get; set; }
 
         [StringLength(200)]
@@ -24,14 +26,9 @@ namespace ShiipingAPI.Models
         [Display(Name = "Location Longitude")]
         public double Longitude { get; set; }
 
-
-        [Required]
-        [Display(Name = "Velocity")]
-        [Range(0,9999)]
-         public int Velocity { get; set; }
-
         [Required]
         [JsonIgnore]
+        [DefaultValue(true)]
         public Int16 Status { get; set; } = 1; //1: Active, 2:Inactive, 3: Deleted
 
         [JsonIgnore]
@@ -40,6 +37,9 @@ namespace ShiipingAPI.Models
         [JsonIgnore]
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
+        [JsonIgnore]
+        [DefaultValue(0)]
+        public int Distance { get; set; } = 0;
 
     }
 }

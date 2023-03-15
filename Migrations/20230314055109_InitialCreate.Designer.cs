@@ -12,7 +12,7 @@ using ShiipingAPI.Data;
 namespace ShiipingAPI.Migrations
 {
     [DbContext(typeof(ShiipingAPIContext))]
-    [Migration("20230313151654_InitialCreate")]
+    [Migration("20230314055109_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,43 @@ namespace ShiipingAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("ShiipingAPI.Models.Port", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<short>("Status")
+                        .HasColumnType("smallint");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Port");
+                });
 
             modelBuilder.Entity("ShiipingAPI.Models.Ship", b =>
                 {
@@ -39,10 +76,10 @@ namespace ShiipingAPI.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<double>("LocationLat")
+                    b.Property<double>("Latitude")
                         .HasColumnType("float");
 
-                    b.Property<double>("LocationLong")
+                    b.Property<double>("Longitude")
                         .HasColumnType("float");
 
                     b.Property<string>("Name")
@@ -55,6 +92,9 @@ namespace ShiipingAPI.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Velocity")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
