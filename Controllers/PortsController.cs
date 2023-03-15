@@ -32,7 +32,7 @@ namespace ShiipingAPI.Controllers
 
         // GET: api/Ports/5
         [HttpGet("{id}")]
-        public Port GetPort(int id)
+        public Port GetPortById(int id)
         {
             return portService.GetPortById(id);
         }
