@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  shiipingapi:
+    image: ${DOCKER_REGISTRY-}shiipingapi
+    build:
+      context: .
+      dockerfile: Dockerfile
