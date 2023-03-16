@@ -47,7 +47,10 @@
         
 5) Test Project download from "https://github.com/jainvikram444/ShiipingAPI.Tests/tree/master" and add current solution. Update projet dependecies as per project location.
 
-6) Docker:
+6) CI: Integrated with the solution in GIT Action for the build and test.
+  - It's just for the demo.
+
+7) Docker:
          - Two way is there for the running docker images:
 
          Solution 1:
@@ -75,7 +78,7 @@
             - Download the docker imgae from:
             > docker pull jainvikram444/shiipping-api
 
-7) Only for ref: 
+8) Only for ref: 
  - Database seeding it's auto deployment in development mode if records not available in the Port and Ship tables as per below:
 - Only for the reference:  
     new Port
