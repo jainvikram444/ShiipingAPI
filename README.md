@@ -44,8 +44,10 @@
         DELETE
         ​/api​/Ships​/{id}
         Delete Ship.
+        
+5) Test Project download from "https://github.com/jainvikram444/ShiipingAPI.Tests/tree/master" and add current solution. Update projet dependecies as per project location.
 
-5) Only for ref: 
+6) Only for ref: 
  - Database seeding it's auto deployment in development mode if records not available in the Port and Ship tables as per below:
 - Only for the reference:  
     new Port
