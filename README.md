@@ -49,6 +49,7 @@
 
 6) CI: Integrated with the solution in GIT Action for the build and test.
   - It's just for the demo.
+  - Verify at: https://github.com/jainvikram444/ShiipingAPI/actions
 
 7) Docker:
          - Two way is there for the running docker images:
