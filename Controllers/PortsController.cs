@@ -12,7 +12,7 @@ using ShiipingAPI.Services;
 namespace ShiipingAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiExplorerSettings(IgnoreApi = false)]
+    [ApiExplorerSettings(IgnoreApi = true)]
     [ApiController]
     public class PortsController : ControllerBase
     {
