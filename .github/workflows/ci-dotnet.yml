@@ -21,6 +21,6 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore ./ShiipingAPI.cspro
+      run: dotnet restore ShiipingAPI.cspro
     - name: Build
-      run: dotnet build ./ShiipingAPI.csproj --configuration Release --no-restore
+      run: dotnet build ShiipingAPI.csproj --configuration Release --no-restore
