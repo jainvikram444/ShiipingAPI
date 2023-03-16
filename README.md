@@ -48,32 +48,32 @@
 5) Test Project download from "https://github.com/jainvikram444/ShiipingAPI.Tests/tree/master" and add current solution. Update projet dependecies as per project location.
 
 6) Docker:
- - Two way is there for the running docker images:
+         - Two way is there for the running docker images:
 
- Solution 1:
+         Solution 1:
 
-    a) Right click on Shiiping.APi folder and select "add->Add container orchestration support". And select option as per system like Linux and Windows. 
+            a) Right click on Shiiping.APi folder and select "add->Add container orchestration support". And select option as per system like Linux and Windows. 
 
-    b) Rebuild soltion and execute below command for the build image,
+            b) Rebuild soltion and execute below command for the build image,
 
-    c) Update sql connection string from the appsetting.json: 
-        Shiiping API(folder of APP) > docker run -it --rm -p 8080:80 ytdocker:v1
+            c) Update sql connection string from the appsetting.json: 
+                Shiiping API(folder of APP) > docker run -it --rm -p 8080:80 ytdocker:v1
 
-    d) wait for build image and check image name like:
-    -> docker images
+            d) wait for build image and check image name like:
+            -> docker images
 
-    e) Update the mapping port and run docker image:
-        > docker run -it --rm -p 8080:80 ytdocker:v1
+            e) Update the mapping port and run docker image:
+                > docker run -it --rm -p 8080:80 ytdocker:v1
 
-    7) Open the swagger api in broser as per port config:
-        - http://localhost:8080/swagger/index.html
+            7) Open the swagger api in broser as per port config:
+                - http://localhost:8080/swagger/index.html
 
-Soltion-2:
-    - Download and biuild docker image from the Shiiping folder like docker-compose.yml, appsetting.json, .dockignore, Dockerfile.
+        Soltion-2:
+            - Download and biuild docker image from the Shiiping folder like docker-compose.yml, appsetting.json, .dockignore, Dockerfile.
 
-Solution-3:
-    - Download the docker imgae from:
-    > docker pull jainvikram444/shiipping-api
+        Solution-3:
+            - Download the docker imgae from:
+            > docker pull jainvikram444/shiipping-api
 
 7) Only for ref: 
  - Database seeding it's auto deployment in development mode if records not available in the Port and Ship tables as per below:
