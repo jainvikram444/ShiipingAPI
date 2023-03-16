@@ -51,6 +51,7 @@
  - Two way is there for the running docker images:
 
  Solution 1:
+
     a) Right click on Shiiping.APi folder and select "add->Add container orchestration support". And select option as per system like Linux and Windows. 
 
     b) Rebuild soltion and execute below command for the build image,
