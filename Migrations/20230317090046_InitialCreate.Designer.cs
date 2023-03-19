@@ -12,7 +12,7 @@ using ShiipingAPI.Data;
 namespace ShiipingAPI.Migrations
 {
     [DbContext(typeof(ShiipingAPIContext))]
-    [Migration("20230315170904_InitialCreate")]
+    [Migration("20230317090046_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,6 +61,9 @@ namespace ShiipingAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Port");
                 });
 
@@ -100,6 +103,9 @@ namespace ShiipingAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Ship");
                 });

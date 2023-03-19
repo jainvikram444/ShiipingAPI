@@ -53,7 +53,7 @@ namespace ShiipingAPI.Migrations
 
                     new Port
                     {
-                        Name = "Mumbai Port",
+                        Name = "Japan Port",
                         Description = "Japan",
                         Latitude = 35.453730,
                         Longitude = 140.830014,

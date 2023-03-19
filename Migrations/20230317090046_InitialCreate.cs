@@ -48,6 +48,18 @@ namespace ShiipingAPI.Migrations
                 {
                     table.PrimaryKey("PK_Ship", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Port_Name",
+                table: "Port",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ship_Name",
+                table: "Ship",
+                column: "Name",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

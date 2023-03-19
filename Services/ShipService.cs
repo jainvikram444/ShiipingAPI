@@ -15,36 +15,37 @@ namespace ShiipingAPI.Services
             _context = context;
         }
 
-        public IEnumerable<Ship> GetShipList()
+        public async Task<IEnumerable<Ship>> GetShipList()
         {
-            return _context.Ship.Where(r => r.Status.Equals(1)).OrderBy(s => s.Name).Take(100).ToList();
-        }
+            var ships = await _context.Ship.Where(r => r.Status.Equals(1)).OrderBy(s => s.Name).Take(100).ToListAsync();
+            return ships;
+         }
 
-        public ShipPortResponse GetShipById(int id)
+        public async Task<ShipPortResponse> GetShipById(int id)
         {
             var shipPortResponse = new ShipPortResponse();
 
-            var ship =  _context.Ship.Find(id);
+            var ship =  _context.Ship.FindAsync(id);
 
-            if (ship == null)
+            if (ship.Result == null)
             {
-                return null;
+                return shipPortResponse;
             }
 
-            var port = _context.Port.FromSqlRaw($"SELECT top 1  cast(geography::Point(latitude, longitude, 4326).STDistance('POINT({ship.Longitude} {ship.Latitude})')/1000 as int) as distance, port.id, port.name, port.description, port.latitude, port.longitude, port.CreatedAt, port.UpdatedAT, port.Status FROM dbo.port where status=1 order by distance asc").FirstOrDefault();
+            var port = _context.Port.FromSqlRaw($"SELECT top 1  cast(geography::Point(latitude, longitude, 4326).STDistance('POINT({ship.Result.Longitude} {ship.Result.Latitude})')/1000 as int) as distance, port.id, port.name, port.description, port.latitude, port.longitude, port.CreatedAt, port.UpdatedAT, port.Status FROM dbo.port where status=1 order by distance asc").FirstOrDefaultAsync();
 
-            shipPortResponse.Id = ship.Id;
-            shipPortResponse.Name = ship.Name;
-            shipPortResponse.Description = ship.Description;
-            shipPortResponse.Latitude = ship.Latitude;
-            shipPortResponse.Longitude = ship.Longitude;
-            shipPortResponse.Id = ship.Velocity;
+            shipPortResponse.Id = ship.Result.Id;
+            shipPortResponse.Name = ship.Result.Name;
+            shipPortResponse.Description = ship.Result.Description;
+            shipPortResponse.Latitude = ship.Result.Latitude;
+            shipPortResponse.Longitude = ship.Result.Longitude;
+            shipPortResponse.Id = ship.Result.Velocity;
 
-            if (port != null)
+            if (port.Result != null)
             {
-                shipPortResponse.Distance = port.Distance;
-                shipPortResponse.Port = port.Name;
-                var totalHour = port.Distance / ship.Velocity;
+                shipPortResponse.Distance = port.Result.Distance;
+                shipPortResponse.Port = port.Result.Name;
+                var totalHour = port.Result.Distance / ship.Result.Velocity;
                 var arrivalTime = DateTime.Now.ToUniversalTime();
                 arrivalTime.AddHours(totalHour);
                 shipPortResponse.ArrivalTime = arrivalTime.ToShortDateString();

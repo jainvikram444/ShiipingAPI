@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace ShiipingAPI.Models
 {
-    
+    [Index(nameof(Name), IsUnique = true)]
     public class Ship
     {
          public int Id { get; set; }

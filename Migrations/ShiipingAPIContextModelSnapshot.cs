@@ -59,6 +59,9 @@ namespace ShiipingAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Port");
                 });
 
@@ -98,6 +101,9 @@ namespace ShiipingAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Ship");
                 });

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +13,7 @@ using ShiipingAPI.Data;
 using ShiipingAPI.Models;
 using ShiipingAPI.RespnseModels;
 using ShiipingAPI.Services;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace ShiipingAPI
 {
@@ -24,7 +26,7 @@ namespace ShiipingAPI
         {
             shipService = _shipService;
         }
-                
+
 
         /// <summary>
         /// Get Ship List.
@@ -39,20 +41,32 @@ namespace ShiipingAPI
         /// <response code="200">Returns the list of Ship</response>
         /// <response code="400">If the item is null</response>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, type: typeof(Response<Ship>))]
+        [ProducesResponseType(statusCode: StatusCodes.Status404NotFound, type: typeof(SwaggerErrorResponse))]
+        [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest, type: typeof(SwaggerErrorResponse))] 
         [Produces("application/json")]
-        public IEnumerable<Ship> GetShip()
-        {
-            var shiptList = shipService.GetShipList();
-            return shiptList;
+        public async Task<ActionResult<IEnumerable<Response<Ship>>>> GetShip()
+        { 
+           var shipsResponse =  await shipService.GetShipList();
+           if (shipsResponse != null && shipsResponse.Count() > 0 )
+            {
+                var sussessResponse = new Response<Ship>(true, "Successfully fetch the records", shipsResponse.ToList());
+                return Ok(sussessResponse);
+            }
+            else if (shipsResponse != null && shipsResponse.Count() == 0)
+            {
+                var blankResponse = new Response<Ship>(false, "Records not fond", null);
+                return NotFound(blankResponse);
+            }
+            var errorResponse = new Response<Ship>(false, "Something wrong in server. Pleae try agin.", null);
+            return BadRequest(errorResponse);
         }
 
 
         /// <summary>
         /// Get Ship Details.
         /// </summary>        
-        /// <param name="id"></param>
+        /// <param name="Id"></param>
         /// <returns>Details of Ship</returns>
         /// <remarks>
         /// Sample request:
@@ -62,14 +76,30 @@ namespace ShiipingAPI
         /// </remarks>
         /// <response code="200">Returns the details of Ship</response>
         /// <response code="400">If the item is null</response>
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, type: typeof(Response<ShipPortResponse>))]
+        [ProducesResponseType(statusCode: StatusCodes.Status404NotFound, type: typeof(SwaggerErrorResponse))]
+        [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest, type: typeof(SwaggerErrorResponse))]
         [Produces("application/json")]
-        [HttpGet("{id}")]
-        public ShipPortResponse GetShip(int id)
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<Response<ShipPortResponse>>> GetShip(int Id)
         {
-            return shipService.GetShipById(id);
-        }
+            var shipPortResponse = await shipService.GetShipById(Id);
+            if (shipPortResponse != null && shipPortResponse.Id > 0 )
+            {
+                IEnumerable<ShipPortResponse> shipPortResponses = new[] { shipPortResponse };
+                var sussessResponse = new Response<ShipPortResponse>(true, "Successfully fetch the records", shipPortResponses);
+                return Ok(sussessResponse);
+            } 
+            else if (shipPortResponse != null && shipPortResponse.Id  == 0)
+            {
+                IEnumerable<ShipPortResponse> shipPortResponses = new[] { shipPortResponse };
+                var sussessResponse = new Response<ShipPortResponse>(false, $"Record not found for the ID: {Id}", null);
+                return NotFound(sussessResponse);
+            }
+                
+            var errorResponse = new Response<ShipPortResponse>(false, "Something wrong in server. Pleae try agin.", null);
+            return BadRequest(errorResponse);
+         }
 
         // PUT: api/Ships/5
         /// <summary>
