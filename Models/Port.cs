@@ -35,10 +35,5 @@ namespace ShiipingAPI.Models
 
         [JsonIgnore]
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
-
-        [JsonIgnore]
-        [DefaultValue(0)]
-        public int Distance { get; set; } = 0;
-
     }
 }

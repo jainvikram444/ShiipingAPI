@@ -22,6 +22,20 @@ namespace ShiipingAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("ShiipingAPI.Models_KeyLess.PortNearByShip", b =>
+                {
+                    b.Property<int>("Distance")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PortId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PortName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("PortNearByShip", null, t => t.ExcludeFromMigrations());
+                });
+
             modelBuilder.Entity("ShiipingAPI.Models.Port", b =>
                 {
                     b.Property<int>("Id")

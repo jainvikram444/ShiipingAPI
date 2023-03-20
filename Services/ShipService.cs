@@ -31,8 +31,11 @@ namespace ShiipingAPI.Services
             {
                 return shipPortResponse;
             }
-
-            var port = _context.Port.FromSqlRaw($"SELECT top 1  cast(geography::Point(latitude, longitude, 4326).STDistance('POINT({ship.Result.Longitude} {ship.Result.Latitude})')/1000 as int) as distance, port.id, port.name, port.description, port.latitude, port.longitude, port.CreatedAt, port.UpdatedAT, port.Status FROM dbo.port where status=1 order by distance asc").FirstOrDefaultAsync();
+                       
+            var port = _context.PortNearByShip
+                .FromSqlRaw($"SELECT top 1  cast(geography::Point(latitude, longitude, 4326).STDistance('POINT({ship.Result.Longitude} {ship.Result.Latitude})')/1000 as int) as distance," +
+                "port.id as PortId, port.name as PortName FROM dbo.port where status=1 order by distance asc")
+                 .FirstOrDefaultAsync();
 
             shipPortResponse.Id = ship.Result.Id;
             shipPortResponse.Name = ship.Result.Name;
@@ -44,7 +47,7 @@ namespace ShiipingAPI.Services
             if (port.Result != null)
             {
                 shipPortResponse.Distance = port.Result.Distance;
-                shipPortResponse.Port = port.Result.Name;
+                shipPortResponse.Port = port.Result.PortName;
                 var totalHour = port.Result.Distance / ship.Result.Velocity;
                 var arrivalTime = DateTime.Now.ToUniversalTime();
                 arrivalTime.AddHours(totalHour);
