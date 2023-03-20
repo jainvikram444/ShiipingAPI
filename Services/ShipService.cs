@@ -39,7 +39,7 @@ namespace ShiipingAPI.Services
             shipPortResponse.Description = ship.Result.Description;
             shipPortResponse.Latitude = ship.Result.Latitude;
             shipPortResponse.Longitude = ship.Result.Longitude;
-            shipPortResponse.Id = ship.Result.Velocity;
+            shipPortResponse.Velocity = ship.Result.Velocity;
 
             if (port.Result != null)
             {
@@ -55,63 +55,75 @@ namespace ShiipingAPI.Services
             return shipPortResponse;
         }
 
-        public Ship AddShip(Ship ship)
-        {
-            var result = _context.Ship.Add(ship);
-             _context.SaveChanges();
+        public async Task<Ship> AddShip(ShipRequest shipRequest)
+        {            
+            var ship = new Ship();
+            ship.Name = shipRequest.Name;
+            ship.Description = shipRequest.Description;
+            ship.Latitude = shipRequest.Latitude;
+            ship.Longitude = shipRequest.Longitude;
+            ship.Velocity = shipRequest.Velocity;
+            ship.Status = 1;
+           
+            var result = await _context.Ship.AddAsync(ship);
 
-            return result.Entity;
-        }
+            try
+            {
+                await _context.SaveChangesAsync();
+                return result.Entity;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return null;
+            }
+         }
 
-        public Ship UpdateShip(int id, Ship ship)
+        public async Task<Ship> UpdateShip(int id, ShipRequest shipRequest)
         {
             if (id <= 0)
             {
                 return null;
             }
 
-            if (ship.Velocity <= 0)
+            if (shipRequest.Velocity <= 0)
             {
                 return null;
             }
 
-            var entity = _context.Ship.FirstOrDefault(e => e.Id == id);
+            var _ship = await _context.Ship.FirstOrDefaultAsync(e => e.Id == id);
 
-            if (entity == null)
+            if (_ship == null)
             {
                 return null; ;
             }
-            entity.Velocity = ship.Velocity;
-            entity.Latitude = ship.Latitude == 0 ? entity.Latitude : ship.Latitude;
-            entity.Longitude = ship.Longitude == 0 ? entity.Longitude : ship.Longitude;
-            entity.Name = string.IsNullOrEmpty(ship.Name) ? entity.Name : ship.Name;
-            entity.Description = string.IsNullOrEmpty(ship.Description) ? entity.Description : ship.Description;
+            _ship.Velocity = shipRequest.Velocity;
+            _ship.Latitude = shipRequest.Latitude == 0 ? _ship.Latitude : shipRequest.Latitude;
+            _ship.Longitude = shipRequest.Longitude == 0 ? _ship.Longitude : shipRequest.Longitude;
+            _ship.Name = string.IsNullOrEmpty(shipRequest.Name) ? _ship.Name : shipRequest.Name;
+            _ship.Description = string.IsNullOrEmpty(shipRequest.Description) ? _ship.Description : shipRequest.Description;
 
-            var result = _context.Ship.Update(entity);
-
+            var result =  _context.Ship.Update(_ship);
             try
             {
-              _context.SaveChanges();
-                return result.Entity;
-
+               await _context.SaveChangesAsync();
+               return result.Entity;
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception)
             {
                 return null;
-
             }
         }
 
-        public bool DeleteShip(int Id)
+        public async Task<bool> DeleteShip(int Id)
         {
-            var Ship = _context.Ship.Find(Id);
-            if (Ship == null)
+            var ship = await _context.Ship.FindAsync(Id);
+            if (ship == null)
             {
                 return false;
             }
 
-            _context.Ship.Remove(Ship);
-            var result = _context.SaveChanges();
+            _context.Ship.Remove(ship);
+            var result = await _context.SaveChangesAsync();
 
             return result > 0 ? true : false;
         }

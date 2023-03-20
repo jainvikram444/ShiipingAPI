@@ -7,9 +7,9 @@ namespace ShiipingAPI.Services
     public interface IShipService
     {
         public Task<IEnumerable<Ship>> GetShipList();
-        public Task<ShipPortResponse> GetShipById(int id);
-        public Ship AddShip(Ship Ship);
-        public Ship UpdateShip(int Id, Ship Ship);
-        public bool DeleteShip(int Id);
+        public Task<ShipPortResponse> GetShipById(int Id);
+        public Task<Ship> AddShip(ShipRequest shipRequest);
+        public Task<Ship> UpdateShip(int Id, ShipRequest shipRequest);
+        public Task<bool> DeleteShip(int Id);
     }
 }

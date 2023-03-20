@@ -31,6 +31,18 @@ namespace ShiipingAPI.RespnseModels
         [DefaultValue(null)]
         public Array ResponseData { get; set; }
     }
+
+
+    public class SwaggerBoolResponse
+    {
+        [DefaultValue(true)]
+        public bool IsSuccess { get; set; } = true;
+        [DefaultValue("Success message")]
+        public string Message { get; set; } = "Success message";
+        [DefaultValue(null)]
+        public Array ResponseData { get; set; }
+    }
+
 }
 
 
