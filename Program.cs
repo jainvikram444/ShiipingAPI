@@ -7,15 +7,16 @@ using System.Reflection;
 using ShiipingAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+var SqlConnectingString = builder.Configuration["SqlConnectingString"];
 
 
 builder.Services.AddScoped<IPortService, PortService>();
 builder.Services.AddScoped<IShipService, ShipService>();
 
+/*builder.Services.AddDbContext<ShiipingAPIContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ShiipingAPIContext") ?? throw new InvalidOperationException("Connection string 'ShiipingAPIContext' not found."))); */
 
-
-builder.Services.AddDbContext<ShiipingAPIContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ShiipingAPIContext") ?? throw new InvalidOperationException("Connection string 'ShiipingAPIContext' not found.")));
+builder.Services.AddDbContext<ShiipingAPIContext>(options => options.UseSqlServer(SqlConnectingString ?? throw new InvalidOperationException("Connection string 'ShiipingAPIContext' not found.")));
 
 // Add services to the container.
 
@@ -64,7 +65,6 @@ if (app.Environment.IsDevelopment())
         PortSeedData.Initialize(services);
         ShipSeedData.Initialize(services);
     }
-
 }
 
 app.UseHttpsRedirection();
