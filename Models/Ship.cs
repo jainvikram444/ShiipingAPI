@@ -17,18 +17,15 @@ namespace ShiipingAPI.Models
         [StringLength(200)]
         public string Description { get; set; } = string.Empty;
 
-        [Required]
         [Display(Name = "Latitude")]
         public double Latitude { get; set; }
 
-        [Required]
         [Display(Name = "Location Longitude")]
         public double Longitude { get; set; }
 
-        [Required]
         [Display(Name = "Velocity")]
         [Range(0,9999)]
-         public int Velocity { get; set; }
+        public int Velocity { get; set; }
 
         [Required]
         [JsonIgnore]

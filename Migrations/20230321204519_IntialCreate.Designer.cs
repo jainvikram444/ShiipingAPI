@@ -12,8 +12,8 @@ using ShiipingAPI.Data;
 namespace ShiipingAPI.Migrations
 {
     [DbContext(typeof(ShiipingAPIContext))]
-    [Migration("20230317090046_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230321204519_IntialCreate")]
+    partial class IntialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,20 @@ namespace ShiipingAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("ShiipingAPI.Models_KeyLess.PortNearByShip", b =>
+                {
+                    b.Property<int>("Distance")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PortId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PortName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("PortNearByShip", null, t => t.ExcludeFromMigrations());
+                });
 
             modelBuilder.Entity("ShiipingAPI.Models.Port", b =>
                 {
@@ -38,9 +52,6 @@ namespace ShiipingAPI.Migrations
                     b.Property<string>("Description")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("Distance")
-                        .HasColumnType("int");
 
                     b.Property<double>("Latitude")
                         .HasColumnType("float");

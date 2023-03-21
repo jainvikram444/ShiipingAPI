@@ -49,7 +49,7 @@ namespace ShiipingAPI.Migrations
 
                     b.Property<string>("Description")
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");                     
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
