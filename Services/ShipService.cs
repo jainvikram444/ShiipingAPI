@@ -3,6 +3,7 @@ using ShiipingAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using ShiipingAPI.RespnseModels;
+using Microsoft.Data.SqlClient;
 
 namespace ShiipingAPI.Services
 {
@@ -31,11 +32,10 @@ namespace ShiipingAPI.Services
             {
                 return shipPortResponse;
             }
-                       
-            var port = _context.PortNearByShip
-                .FromSqlRaw($"SELECT top 1  cast(geography::Point(latitude, longitude, 4326).STDistance('POINT({ship.Result.Longitude} {ship.Result.Latitude})')/1000 as int) as distance," +
-                "port.id as PortId, port.name as PortName FROM dbo.port where status=1 order by distance asc")
-                 .FirstOrDefaultAsync();
+
+            //Prevent from SQL injetion
+            var param = new SqlParameter("@ShipId", Id);
+            var portNearByShip = _context.PortNearByShip.FromSqlRaw($"GetPortNearByShip @ShipId", param).ToListAsync();
 
             shipPortResponse.Id = ship.Result.Id;
             shipPortResponse.Name = ship.Result.Name;
@@ -44,15 +44,14 @@ namespace ShiipingAPI.Services
             shipPortResponse.Longitude = ship.Result.Longitude;
             shipPortResponse.Velocity = ship.Result.Velocity;
 
-            if (port.Result != null)
+            if (portNearByShip.Result != null && portNearByShip.Result.Count > 0)
             {
-                shipPortResponse.Distance = port.Result.Distance;
-                shipPortResponse.Port = port.Result.PortName;
-                var totalHour = port.Result.Distance / ship.Result.Velocity;
+                shipPortResponse.Distance = portNearByShip.Result[0].Distance;
+                shipPortResponse.Port = portNearByShip.Result[0].PortName;
+                var totalHour = portNearByShip.Result[0].Distance / ship.Result.Velocity;
                 var arrivalTime = DateTime.Now.ToUniversalTime();
                 arrivalTime.AddHours(totalHour);
                 shipPortResponse.ArrivalTime = arrivalTime.ToShortDateString();
-
             }
 
             return shipPortResponse;
