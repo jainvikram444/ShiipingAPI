@@ -25,7 +25,6 @@ namespace ShiipingAPI.Models
         [Display(Name = "Location Longitude")]
         public double Longitude { get; set; }
 
-
         [Required]
         [Display(Name = "Velocity")]
         [Range(0,9999)]
@@ -40,7 +39,5 @@ namespace ShiipingAPI.Models
 
         [JsonIgnore]
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
-
-
     }
 }

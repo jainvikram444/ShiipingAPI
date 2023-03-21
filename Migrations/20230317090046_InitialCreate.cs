@@ -21,9 +21,8 @@ namespace ShiipingAPI.Migrations
                     Longitude = table.Column<double>(type: "float", nullable: false),
                     Status = table.Column<short>(type: "smallint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Distance = table.Column<int>(type: "int", nullable: false)
-                },
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Port", x => x.Id);
