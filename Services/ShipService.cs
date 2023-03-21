@@ -21,11 +21,11 @@ namespace ShiipingAPI.Services
             return ships;
          }
 
-        public async Task<ShipPortResponse> GetShipById(int id)
+        public async Task<ShipPortResponse> GetShipById(int Id)
         {
             var shipPortResponse = new ShipPortResponse();
 
-            var ship =  _context.Ship.FindAsync(id);
+            var ship =  _context.Ship.FindAsync(Id);
 
             if (ship.Result == null)
             {
@@ -81,19 +81,14 @@ namespace ShiipingAPI.Services
             }
          }
 
-        public async Task<Ship> UpdateShip(int id, ShipRequest shipRequest)
+        public async Task<Ship> UpdateShip(int Id, ShipRequest shipRequest)
         {
-            if (id <= 0)
+            if (Id <= 0)
             {
                 return null;
             }
-
-            if (shipRequest.Velocity <= 0)
-            {
-                return null;
-            }
-
-            var _ship = await _context.Ship.FirstOrDefaultAsync(e => e.Id == id);
+                      
+            var _ship = await _context.Ship.FirstOrDefaultAsync(e => e.Id == Id);
 
             if (_ship == null)
             {
@@ -110,6 +105,33 @@ namespace ShiipingAPI.Services
             {
                await _context.SaveChangesAsync();
                return result.Entity;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public async Task<Ship> UpdateShipVelocity(int Id, int Velocity)
+        {
+            if (Id <= 0)
+            {
+                return null;
+            } 
+
+            var _ship = await _context.Ship.FirstOrDefaultAsync(e => e.Id == Id);
+
+            if (_ship == null)
+            {
+                return null; ;
+            }
+            _ship.Velocity = Velocity;
+           
+            var result = _context.Ship.Update(_ship);
+            try
+            {
+                await _context.SaveChangesAsync();
+                return result.Entity;
             }
             catch (Exception)
             {

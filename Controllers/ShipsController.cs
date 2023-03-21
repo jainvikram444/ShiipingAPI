@@ -106,7 +106,7 @@ namespace ShiipingAPI
         /// <summary>
         /// Update Ship Velocity
         /// </summary>        
-        /// <param name="id"></param>
+        /// <param name="Id"></param>
         /// <returns>Details of Ship</returns>
         /// <remarks>
         /// Sample request:
@@ -132,6 +132,45 @@ namespace ShiipingAPI
             {
                 IEnumerable<Ship> shipResponses = new[] { shipResponse };
                 var sussessResponse = new Response<Ship>(true, "Successfully update the record", shipResponses);
+                return Ok(sussessResponse);
+            }
+            else if (shipResponse != null && shipResponse.Id == 0)
+            {
+                var sussessResponse = new Response<Ship>(false, $"Record not update for the ID: {Id}", null);
+                return NotFound(sussessResponse);
+            }
+
+            var errorResponse = new Response<Ship>(false, "Something wrong in server. Pleae try agin.", null);
+            return BadRequest(errorResponse);
+        }
+
+        // POST: api/Ships/5/UpdateVelocity/35
+        /// <summary>
+        /// Update velocity of Ship
+        /// </summary>        
+        /// <param name="Id"></param>
+        /// <returns>Details of Ship</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/Ships/5/UpdateVelocity/30
+        ///
+        /// </remarks>
+        /// <response code="200">Returns the updated details of Ship</response>
+        /// <response code="404">If record not found </response>
+        /// <response code="400">If something wrong in process</response>
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, type: typeof(Response<Ship>))]
+        [ProducesResponseType(statusCode: StatusCodes.Status404NotFound, type: typeof(SwaggerErrorResponse))]
+        [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest, type: typeof(SwaggerErrorResponse))]
+        [Produces("application/json")]
+        [HttpPost("{Id}/UpdateVelocity/{Velocity}")]
+        public async Task<ActionResult<Response<Ship>>> PostUpdateShipVelocity(int Id, int Velocity)
+        {
+            var shipResponse = await shipService.UpdateShipVelocity(Id, Velocity);
+            if (shipResponse != null && shipResponse.Id > 0)
+            {
+                IEnumerable<Ship> shipResponses = new[] { shipResponse };
+                var sussessResponse = new Response<Ship>(true, "Successfully update the velocity of Ship", shipResponses);
                 return Ok(sussessResponse);
             }
             else if (shipResponse != null && shipResponse.Id == 0)
