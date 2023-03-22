@@ -4,12 +4,24 @@
     - .NET core 6.0
     - SQL Server
 
-2) Change the SQL connection string inside of "appconfig.json" file:
+2) Change the SQL connection string set n secrets.json file or set as per below:
 - Like:  
+        <Profile_Path>/secrets.json:
 
-        "ConnectionStrings": {
-            "ShiipingAPIContext": "Server=(localdb)\\mssqllocaldb;Database=ShiipingAPI.Data;Trusted_Connection=True;MultipleActiveResultSets=true"
+        {
+            "SqlConnectingString": "Server=(localdb)\\mssqllocaldb;Database=ShiipingAPI.Data;Trusted_Connection=True;MultipleActiveResultSets=true"
         }
+
+        Or
+
+         - Set in command prompt in Windows:
+        > dotnet user-secrets list --project "<Project Path>\ShiipingAPI\ShiipingAPI.csproj"
+            => List of all secrets.
+        > dotnet user-secrets set SqlConnectingString "Server=(localdb)\mssqllocaldb;Database=ShiipingAPI.Data;Trusted_Connection=True;MultipleActiveResultSets=true" --project "<Project Path>\ShiipingAPI\ShiipingAPI.csproj"
+            => Set the SqlConnectingString string in secrets.
+
+        Note: Change the SQL connection string and Project Path as per your location.
+        Ref: https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0&tabs=windows
 
 3) Database migration as below:
 - Enter below commnand in package manager for the database migration:
